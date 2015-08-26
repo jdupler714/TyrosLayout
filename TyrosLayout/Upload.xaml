@@ -40,10 +40,11 @@
 
         <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" 
                    Text="Drop your files below to upload them" FontSize="18"/>
-        <ListBox ItemsSource="{Binding Path=Files}" Grid.Column="1" Grid.Row="2"
+        <ListBox ItemsSource="{Binding Path=Files}" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2"
                  Name="DropBox" HorizontalAlignment="Center" Height="181" Margin="10,0,0,0" 
                  VerticalAlignment="Center" Width="489" AllowDrop="True" Drop="DropBox_Drop"
                  DragOver="DropBox_DragOver" DragLeave="DropBox_DragLeave" Background="#FFE2E2E2" FontSize="10">
+            
         </ListBox>
         <Button Grid.Row="3" Grid.Column="1" Click="Browse">Browse Files</Button>
         <Button Grid.Row="3" Grid.Column="3" Click="Upload_Docs">Upload</Button>

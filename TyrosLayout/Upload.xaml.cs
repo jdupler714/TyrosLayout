@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -26,6 +27,8 @@ namespace TyrosLayout
             InitializeComponent();
             this.DataContext = this;
         }
+
+        public List<Row> ListBoxData { get; set; }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -118,7 +121,11 @@ namespace TyrosLayout
 
                 foreach (string filePath in files)
                 {
-                    _files.Add(filePath);
+                    FileInfo fi = new FileInfo(filePath);
+                    
+                    _files.Add(fi.Name);
+
+                    
                 }
 
                 UploadFiles(files);
@@ -131,6 +138,12 @@ namespace TyrosLayout
         private void UploadFiles(string[] files)
         {
             return;
+        }
+
+        public class Row
+        {
+            public string Name { get; set; }
+            public string Path { get; set; }
         }
         
     }
