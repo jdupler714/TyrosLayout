@@ -118,27 +118,41 @@ namespace TyrosLayout
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 _files.Clear();
+
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-                foreach (string filePath in files)
+                var fileList = new List<TyrosLayout.Model.File>();
+
+
+                foreach (var file in files)
                 {
-                    FileInfo fi = new FileInfo(filePath);
+
+                    var fileInfo = new FileInfo(file);
+                    fileList.Add(new Model.File()
+                    {
+                        Name = fileInfo.Name,
+                        FullFilePath = file,
+                        SizeInBytes = fileInfo.Length,
+                        RelativeToFolder = null,
+                    });
+                    string name = fileInfo.Name;
+                   // FileInfo fi = new FileInfo(file);
                   //  Row next = new Row();
                   //  next.Name=fi.Name;
                   //  next.LocalPath=filePath;
                   //  ListBoxData.Add(next);
-                    _files.Add(fi.Name);
+                    _files.Add(name);
      
                 }
 
-                UploadFiles(files);
+                UploadFiles(fileList);
             }
 
             var listbox = sender as ListBox;
             listbox.Background = new SolidColorBrush(Color.FromRgb(226, 226, 226));
         }
 
-        private void UploadFiles(string[] files)
+        private void UploadFiles(List<TyrosLayout.Model.File> files)
         {
             return;
         }
