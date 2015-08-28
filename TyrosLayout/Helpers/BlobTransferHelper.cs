@@ -1,20 +1,28 @@
-﻿using System;
-using System.ComponentModel;
+﻿//----------------------------------------------
+//* This code is taken form Kevin William Blog at MSDN as below: */
+/* http://blogs.msdn.com/b/kwill/archive/2011/05/30/asynchronous-parallel-block-blob-transfers-with-progress-change-notification.aspx */
+//----------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.Text;
+using System.ComponentModel;
+using System.Threading;
+using System.Runtime.Remoting.Messaging;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob.Protocol;
 using System.IO;
+using System.Net;
+using System.Security.Cryptography;
 using System.Linq;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Auth;
 
-namespace TyrosLayout
+
+namespace TyrosLayout.Helpers
 {
-
-    // Class to allow for easy async upload and download functions with progress change notifications
-    // Requires references to Microsoft.WindowsAzure.Storage.dll (Storage client 2.0) and Microsoft.WindowsAzure.StorageClient.dll (Storage client 1.7).
-    // See comments on UploadBlobAsync and DownloadBlobAsync functions for information on removing the 1.7 client library dependency
-    class BlobTransfer
+    internal class BlobTransferHelper
     {
         // Public async events
         public event AsyncCompletedEventHandler TransferCompleted;
@@ -38,7 +46,26 @@ namespace TyrosLayout
         private string m_FileName;
         private ICloudBlob m_Blob;
 
-        
+        // Helper function to allow Storage Client 1.7 (Microsoft.WindowsAzure.Storage) to utilize this class.
+        // Remove this function if only using Storage Client 2.0 (Microsoft.WindowsAzure.Storage).
+        public void UploadBlobAsync(Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob blob, string LocalFile)
+        {
+            
+
+            Microsoft.WindowsAzure.Storage.Auth.StorageCredentials account = blob.ServiceClient.Credentials as Microsoft.WindowsAzure.Storage.Auth.StorageCredentials;
+            ICloudBlob blob2 = new Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob(blob.Uri, new Microsoft.WindowsAzure.Storage.Auth.StorageCredentials(blob.ServiceClient.Credentials.AccountName, account.ExportBase64EncodedKey()));
+            UploadBlobAsync(blob2, LocalFile);
+        }
+
+        // Helper function to allow Storage Client 1.7 (Microsoft.WindowsAzure.Storage) to utilize this class.
+        // Remove this function if only using Storage Client 2.0 (Microsoft.WindowsAzure.Storage).
+        public void DownloadBlobAsync(Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob blob, string LocalFile)
+        {
+            Microsoft.WindowsAzure.Storage.Auth.StorageCredentials account = blob.ServiceClient.Credentials as Microsoft.WindowsAzure.Storage.Auth.StorageCredentials;
+            ICloudBlob blob2 = new Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob(blob.Uri, new Microsoft.WindowsAzure.Storage.Auth.StorageCredentials(blob.ServiceClient.Credentials.AccountName, account.ExportBase64EncodedKey()));
+            DownloadBlobAsync(blob2, LocalFile);
+        }
+
         public void UploadBlobAsync(ICloudBlob blob, string LocalFile)
         {
             // The class currently stores state in class level variables so calling UploadBlobAsync or DownloadBlobAsync a second time will cause problems.
@@ -133,7 +160,7 @@ namespace TyrosLayout
                 AsyncCompletedEventArgs completedArgs = new AsyncCompletedEventArgs(null, false, null);
                 asyncOp.PostOperationCompleted(delegate(object e) { OnTaskCompleted((AsyncCompletedEventArgs)e); }, completedArgs);
             }
-            catch (StorageException ex)
+            catch (Microsoft.WindowsAzure.Storage.StorageException ex)
             {
                 if (!state.Cancelled)
                 {
@@ -439,5 +466,11 @@ namespace TyrosLayout
                 m_Speed = Speed;
             }
         }
+    }
+
+    public enum TransferTypeEnum
+    {
+        Download,
+        Upload
     }
 }

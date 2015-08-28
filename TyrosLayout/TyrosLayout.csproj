@@ -79,7 +79,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BlobTransfer.cs" />
+    <Compile Include="Helpers\BlobTransferHelper.cs" />
+    <Compile Include="Models\Blob.cs" />
+    <Compile Include="Models\BlobJob.cs" />
+    <Compile Include="Models\Container.cs" />
+    <Compile Include="Models\File.cs" />
+    <Compile Include="Models\ModelBase.cs" />
+    <Compile Include="Models\SizeUtil.cs" />
+    <Compile Include="Models\Worker.cs" />
     <Compile Include="Pending.xaml.cs">
       <DependentUpon>Pending.xaml</DependentUpon>
     </Compile>
@@ -142,6 +149,7 @@
   <ItemGroup>
     <Resource Include="ref.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

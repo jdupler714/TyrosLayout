@@ -28,8 +28,6 @@ namespace TyrosLayout
             this.DataContext = this;
         }
 
-        public List<Row> ListBoxData { get; set; }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string content = (sender as Button).Content.ToString();
@@ -89,6 +87,8 @@ namespace TyrosLayout
             }
         }
 
+   
+
         private ObservableCollection<string> _files = new ObservableCollection<string>();
 
         private void DropBox_DragOver(object sender, DragEventArgs e)
@@ -114,6 +114,7 @@ namespace TyrosLayout
 
         private void DropBox_Drop(object sender, DragEventArgs e)
         {
+           
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 _files.Clear();
@@ -122,10 +123,12 @@ namespace TyrosLayout
                 foreach (string filePath in files)
                 {
                     FileInfo fi = new FileInfo(filePath);
-                    
+                  //  Row next = new Row();
+                  //  next.Name=fi.Name;
+                  //  next.LocalPath=filePath;
+                  //  ListBoxData.Add(next);
                     _files.Add(fi.Name);
-
-                    
+     
                 }
 
                 UploadFiles(files);
@@ -140,11 +143,6 @@ namespace TyrosLayout
             return;
         }
 
-        public class Row
-        {
-            public string Name { get; set; }
-            public string Path { get; set; }
-        }
         
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using TyrosLayout.Model;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
@@ -27,35 +28,35 @@ namespace TyrosLayout
             InitializeComponent();
         }
 
-        BlobTransfer transfer;
+        Blob transfer;
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            CloudStorageAccount account = new CloudStorageAccount(new Microsoft.WindowsAzure.Storage.Auth.StorageCredentials("accountname", "accountkey"), false);
-            CloudBlobClient client = account.CreateCloudBlobClient();
-            CloudBlobContainer container = client.GetContainerReference("container");
-            CloudBlockBlob blob = container.GetBlockBlobReference("file");
+        //private void button1_Click(object sender, EventArgs e)
+        //{
+        //    CloudStorageAccount account = new CloudStorageAccount(new Microsoft.WindowsAzure.Storage.Auth.StorageCredentials("accountname", "accountkey"), false);
+        //    CloudBlobClient client = account.CreateCloudBlobClient();
+        //    CloudBlobContainer container = client.GetContainerReference("container");
+        //    CloudBlockBlob blob = container.GetBlockBlobReference("file");
 
-            transfer = new BlobTransfer();
-            transfer.TransferProgressChanged += transfer_TransferProgressChanged;
-            transfer.TransferCompleted += transfer_TransferCompleted;
-            transfer.DownloadBlobAsync(blob, @"C:\temp\file");
-        }
+        //    transfer = new Blob();
+        //    transfer.TransferProgressChanged += transfer_TransferProgressChanged;
+        //    transfer.TransferCompleted += transfer_TransferCompleted;
+        //    transfer.DownloadBlobAsync(blob, @"C:\temp\file");
+        //}
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            transfer.CancelAsync();
-        }
+        //private void button2_Click(object sender, EventArgs e)
+        //{
+        //    transfer.CancelAsync();
+        //}
 
-        void transfer_TransferCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Completed. Cancelled = " + e.Cancelled);
-        }
+        //void transfer_TransferCompleted(object sender, AsyncCompletedEventArgs e)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("Completed. Cancelled = " + e.Cancelled);
+        //}
 
-        void transfer_TransferProgressChanged(object sender, BlobTransfer.BlobTransferProgressChangedEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Changed - " + e.BytesSent + " / " + e.TotalBytesToSend + " = " + e.ProgressPercentage + "% " + e.Speed);
-        }
+        //void transfer_TransferProgressChanged(object sender, BlobTransfer.BlobTransferProgressChangedEventArgs e)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("Changed - " + e.BytesSent + " / " + e.TotalBytesToSend + " = " + e.ProgressPercentage + "% " + e.Speed);
+        //}
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string content = (sender as Button).Content.ToString();
