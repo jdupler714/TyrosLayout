@@ -54,7 +54,7 @@
             </ListBox.ItemTemplate>-->
         </ListBox>
         <Button Grid.Row="3" Grid.Column="1" Click="Browse">Browse Files</Button>
-        <Button Grid.Row="3" Grid.Column="3" Click="Upload_Docs">Upload</Button>
+        <Button Grid.Row="3" Grid.Column="3" Command="{Binding SelectFilesCommand}">Upload</Button>
         <StatusBar Grid.Row="4" Grid.Column="1" Height="22" VerticalAlignment="Bottom">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
